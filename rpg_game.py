@@ -16,18 +16,19 @@ class Character:
 #^Created a print status method that prints a string listing the characters health and power.^
 
 class Hero(Character):
-    def __init__(self):
-        super().__init__( name= "hero", health=10, power=5)
+    def __init__(self, name):
+        super().__init__(name, health=10, power=5)
+        self.name = name
 #^Created a hero class that passes through the character methods, and sets the heros name, health and power.^        
 
 class Goblin(Character):
-    def __init__(self):
-        super().__init__(name= "goblin", health=6, power=2)
+    def __init__(self, name):
+        super().__init__(name, health=6, power=2)
 #Created a goblin class that works the same way as the hero class.^
 
 def main():
-    hero = Hero()
-    goblin = Goblin()
+    hero = Hero("Spider-man")
+    goblin = Goblin("Green goblin")
 #^Created the main function with hero and goblin^
     while goblin.alive() and hero.alive():
         hero.print_status()
@@ -35,7 +36,7 @@ def main():
 #^started the while loop that prints the hero and goblins print status while theyre alive.^    
 
         print("What do you want to do?")
-        print("1. fight goblin")
+        print("1. fight Green goblin")
         print("2. do nothing")
         print("3. flee")
         print("> ", end="")
