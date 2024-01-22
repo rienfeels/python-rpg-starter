@@ -43,6 +43,11 @@ class Hero(Character):
         else:
             print("%s doesn't have %s in their inventory." % (self.name, item.name))
 
+    def display_inventory(self):
+        print("Inventory:")
+        for item in self.items:
+            print(item.name)
+
 
 class Enemy(Character):
     def __init__(self, name, bounty, *args, **kwargs):
@@ -152,6 +157,7 @@ class Battle:
             print("2. Do nothing")
             print("3. Use item")
             print("4. Swap power")
+            print("5. Visit store")
             print("> ", end="")
             user_input = input()
 
@@ -163,9 +169,18 @@ class Battle:
             elif user_input == "2":
                 pass
             elif user_input == "3":
-                Store.do_shopping(hero)
+                hero.display_inventory()
+                item_choice = input("Choose an item to use (or 'back' to go back): ")
+                if item_choice.lower() != 'back':
+                    selected_item = next((item for item in hero.items if item.name.lower() == item_choice.lower()), None)
+                    if selected_item:
+                        hero.use_item(selected_item, enemy)
+                    else:
+                        print("Invalid item choice.")
             elif user_input == "4":
                 Battle.swap_power(hero, enemy)
+            elif user_input == "5":
+                Store.do_shopping(hero)
             else:
                 print("Invalid input %r" % user_input)
 
@@ -199,8 +214,17 @@ def main():
             print("Congratulations! You defeated all enemies.")
             break
 
+        # Check hero's status after each battle
+        if not hero.alive():
+            print("Game over. You were defeated.")
+            break
+
     if not any(enemy.alive() for enemy in enemies):
         print("Congratulations! You defeated all enemies.")
+
+    # Check hero's status after all battles
+    if hero.alive():
+        print("You are victorious!")
 
 
 if __name__ == "__main__":
