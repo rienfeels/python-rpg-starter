@@ -1,13 +1,24 @@
 import pygame
 import random
 from os import path 
+pygame.init()
+pygame.mixer.init()
 
 img_dir = 'img'
 
 WIDTH = 480
 HEIGHT = 600
 FPS = 60
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Shmup!")
+clock = pygame.time.Clock()
 
+background = pygame.image.load(path.join(img_dir, 'darkPurple.png')).convert()
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+background_rect = background.get_rect()
+player_img = pygame.image.load(path.join(img_dir, 'playerShip1_green.png')).convert()
+meteor_img = pygame.image.load(path.join(img_dir, 'meteorGrey_med1.png')).convert()
+bullet_img = pygame.image.load(path.join(img_dir, 'laserRed16.png')).convert()
 # define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -17,17 +28,12 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
 # initialize pygame and create window
-pygame.init()
-pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Shmup!")
-clock = pygame.time.Clock()
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((50, 40))
-        self.image.fill(GREEN)
+        self.image = player_img
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
@@ -55,7 +61,7 @@ class Mob(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((30, 40))
-        self.image.fill(RED)
+        self.image = meteor_img
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
@@ -74,7 +80,7 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((10, 20))
-        self.image.fill(YELLOW)
+        self.image = bullet_img
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
@@ -86,11 +92,6 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
-background = pygame.image.load(path.join(img_dir, 'darkPurple.png')).convert()
-background_rect = background.get_rect()
-player_img = pygame.image.load(path.join(img_dir, 'playerShip1_green.png')).convert()
-meteor_img = pygame.image.load(path.join(img_dir, 'meteorGrey_med1.png')).convert()
-bullet_img = pygame.image.load(path.join(img_dir, 'laserRed16.png')).convert()
 
 
 all_sprites = pygame.sprite.Group()
@@ -98,7 +99,7 @@ mobs = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
-for i in range(8):
+for i in range(5):
     m = Mob()
     all_sprites.add(m)
     mobs.add(m)
