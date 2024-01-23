@@ -1,5 +1,8 @@
 import pygame
 import random
+from os import path 
+
+img_dir = 'img'
 
 WIDTH = 480
 HEIGHT = 600
@@ -83,6 +86,13 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
+background = pygame.image.load(path.join(img_dir, 'darkPurple.png')).convert()
+background_rect = background.get_rect()
+player_img = pygame.image.load(path.join(img_dir, 'playerShip1_green.png')).convert()
+meteor_img = pygame.image.load(path.join(img_dir, 'meteorGrey_med1.png')).convert()
+bullet_img = pygame.image.load(path.join(img_dir, 'laserRed16.png')).convert()
+
+
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
@@ -124,6 +134,7 @@ while running:
 
     # Draw / render
     screen.fill(BLACK)
+    screen.blit(background, background_rect)
     all_sprites.draw(screen)
     # *after* drawing everything, flip the display
     pygame.display.flip()
